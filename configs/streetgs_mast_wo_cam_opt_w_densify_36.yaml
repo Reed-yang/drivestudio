@@ -51,7 +51,7 @@ trainer:
       lr: 0.001
   gaussian_ctrl_general_cfg:
     warmup_steps: 500             # warmup steps for alpha
-    reset_alpha_interval: 3000    # reset alpha every n steps
+    reset_alpha_interval: 30000    # reset alpha every n steps
     refine_interval: 100          # refine gaussians every n steps
     sh_degree_interval: 1000      # every n intervals turn on another sh degree
     n_split_samples: 2            # number of samples to split gaussians into
@@ -72,11 +72,13 @@ model:
   Background:
     type: models.gaussians.VanillaGaussians
     init:
-      from_lidar:
-        num_samples: 800_000
-        return_color: True
-      near_randoms: 100_000
-      far_randoms: 100_000
+      # from_lidar:
+      #   num_samples: 800_000
+      #   return_color: True
+      from_mast:
+         path: "data/waymo/processed/training/036/sparse/points3D_conf-0.ply"
+      near_randoms: 0 # TODO check what use here?
+      far_randoms: 0
     reg:
       sharp_shape_reg:
         w: 1.
@@ -122,12 +124,6 @@ model:
       embedding_dim: 4
       base_mlp_layer_width: 64
       pixel_affine: False
-    optim:
-      all:
-        lr: 1.0e-5
-        weight_decay: 1.0e-6
-  CamPose:
-    type: models.modules.CameraOptModule
     optim:
       all:
         lr: 1.0e-5

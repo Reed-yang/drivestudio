@@ -126,6 +126,10 @@ class MultiTrainer(BasicTrainer):
                     sampled_pts, sampled_color, sampled_time = dataset.get_lidar_samples(
                         **init_cfg.from_lidar, device=self.device
                     )
+                elif init_cfg.get("from_mast", None) is not None:
+                    sampled_pts, sampled_color = dataset.get_pc_init(
+                        **init_cfg.from_mast
+                    )
                 else:
                     sampled_pts, sampled_color, sampled_time = \
                         torch.empty(0, 3).to(self.device), torch.empty(0, 3).to(self.device), None

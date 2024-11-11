@@ -1,5 +1,5 @@
 seed: 0
-dataset: waymo/3cams_mast
+dataset: waymo/3cams_wo_smpl
 
 # ------------- Trainer ------------ #
 trainer:
@@ -122,12 +122,6 @@ model:
       embedding_dim: 4
       base_mlp_layer_width: 64
       pixel_affine: False
-    optim:
-      all:
-        lr: 1.0e-5
-        weight_decay: 1.0e-6
-  CamPose:
-    type: models.modules.CameraOptModule
     optim:
       all:
         lr: 1.0e-5

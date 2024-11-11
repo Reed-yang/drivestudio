@@ -17,6 +17,7 @@ from utils.visualization import get_layout
 from utils.geometry import transform_points
 from utils.camera import get_interp_novel_trajectories
 from utils.misc import export_points_to_ply, import_str
+from plyfile import PlyData, PlyElement
 
 logger = logging.getLogger()
 
@@ -30,6 +31,14 @@ NAME_TO_NODE = {
     "SMPLNodes": ModelType.SMPLNodes,
     "DeformableNodes": ModelType.DeformableNodes
 }
+
+def fetchPly(path):
+    plydata = PlyData.read(path)
+    vertices = plydata['vertex']
+    positions = np.vstack([vertices['x'], vertices['y'], vertices['z']]).T
+    colors = np.vstack([vertices['red'], vertices['green'], vertices['blue']]).T / 255.0
+    normals = np.vstack([vertices['nx'], vertices['ny'], vertices['nz']]).T
+    return positions, colors, normals
 
 class DrivingDataset(SceneDataset):
     def __init__(
@@ -202,6 +211,15 @@ class DrivingDataset(SceneDataset):
             sampled_time = sampled_time[..., None]
         
         return sampled_pts, sampled_color, sampled_time
+
+    def get_pc_init(
+            self, 
+            path):
+            
+        positions, colors, normals = fetchPly(path)
+        positions = torch.tensor(positions).to(torch.float32).to("cuda")
+        colors = torch.tensor(colors).to(torch.float32).to("cuda")
+        return positions, colors
     
     def seg_dynamic_instances_in_lidar_frame(
         self,

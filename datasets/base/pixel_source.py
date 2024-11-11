@@ -224,7 +224,8 @@ class CameraData(object):
                 )
             )
             sky_mask_filepaths.append(
-                os.path.join(self.data_path, "sky_masks", f"{t:03d}_{self.cam_id}.png")
+                # os.path.join(self.data_path, "sky_masks", f"{t:03d}_{self.cam_id}.png")
+                os.path.join(self.data_path, "sky_masks", f"{t:03d}_{self.cam_id}.jpg")
             )
         self.img_filepaths = np.array(img_filepaths)
         self.dynamic_mask_filepaths = np.array(dynamic_mask_filepaths)

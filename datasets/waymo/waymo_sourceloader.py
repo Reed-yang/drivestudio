@@ -278,6 +278,8 @@ class WaymoPixelSource(ScenePixelSource):
             # load SMPL parameters
             smpl_dict = joblib.load(os.path.join(self.data_path, "humanpose", "smpl.pkl"))
             frame_num = self.end_timestep - self.start_timestep
+            # smpl_dict = [] # TODO
+            # frame_num = 0
             
             smpl_human_all = {}
             for fi in tqdm(range(self.start_timestep, self.end_timestep), desc="Loading SMPL"):
